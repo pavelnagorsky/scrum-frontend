@@ -1,0 +1,45 @@
+<div class="row">
+  <div class="col-md-5">
+    <div class="card mb-2">
+      <div class="card-body">
+        <div class="d-flex align-items-center">
+          <h4 class="card-title d-flex flex-grow-1">
+            Your projects:
+            <div class="ms-2" *ngIf="loading">
+              <app-loading-spinner></app-loading-spinner>
+            </div>
+          </h4>
+          <button
+            class="btn btn-sm btn-outline-primary mb-2"
+            (click)="onReloadProjects()"
+          >
+            Reload
+          </button>
+        </div>
+        <ul class="list-group">
+          <a 
+            *ngFor="let project of projects"
+            class="list-group-item list-group-item-action"
+            [routerLink]="'/project/' + project._id"
+          >
+            <div>
+              <h5 class="mb-1">{{ project.title }}</h5>
+              <div class="text-secondary">
+                Created: {{ project.createdAt | date }}
+              </div>
+            </div>
+          </a>
+          <li 
+            *ngIf="projects.length === 0"
+            class="list-group-item"
+          >
+            <h6 class="my-2">No projects found...</h6>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-7">
+    <app-projects-search></app-projects-search>
+  </div>
+</div>

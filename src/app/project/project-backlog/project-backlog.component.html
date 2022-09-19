@@ -1,0 +1,43 @@
+<h3 class="display-6 fw-normal title">
+  Project:
+  {{ projectInfo?.title ?? 'No project found' }}
+</h3>
+<hr>
+<div *ngIf="projectInfo">
+  <p class="text-secondary mb-1">
+    Created: 
+    {{ projectInfo.createdAt | date }}
+  </p>
+  <div class="description mb-2" style="max-width: 580px;">
+    {{ projectInfo.description }}
+  </div>
+  <div class="card" *ngIf="!projectInfo._id">
+    <div class="card-body">
+      <div class="card-text fst-italic">
+        No project found
+      </div>
+    </div>
+  </div>
+  <div style="max-width: 400px;">
+    <button 
+      class="btn btn-success mb-2"
+      (click)="toggleTaskForm()"
+    >
+      New Task
+    </button>
+    <app-task-edit *ngIf="taskFormOpen"></app-task-edit>
+  </div>
+  <h1 class="display-6">Backlog:</h1>
+  <div 
+    *ngIf="backlogTasks.length === 0"
+    class="fst-italic"
+  >
+    Project backlog is empty, add new tasks
+  </div>
+  <div class="d-flex flex-wrap justify-content-center justify-content-md-start align-items-md-baseline mb-2">
+    <app-task
+      *ngFor="let task of backlogTasks"
+      [task]="task"
+    ></app-task>
+  </div>
+</div>

@@ -1,0 +1,84 @@
+<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-3">
+  <div class="container">
+    <a class="navbar-brand" routerLink="/projects">Scrum platform</a>
+    <button 
+      appNavbarToggler
+      class="navbar-toggler" 
+      type="button" 
+      data-bs-toggle="collapse" 
+      data-bs-target="#navbarSupportedContent" 
+      aria-controls="navbarSupportedContent" 
+      aria-expanded="false" 
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item dropdown" *ngIf="isAuth">
+          <a 
+            class="nav-link dropdown-toggle" 
+            appDropdown 
+            id="navbarDropdown" 
+            role="button" 
+            data-bs-toggle="dropdown" 
+            aria-expanded="false"
+          >
+            Projects
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+            <li *ngFor="let project of projects">
+              <a 
+                class="dropdown-item"
+                type="button"
+                routerLinkActive="active"
+                [routerLink]="'/project/' + project._id"
+              >
+                {{ project.title }}
+              </a>
+            </li>
+            <li *ngIf="projects.length === 0">
+              <span class="dropdown-item-text">No projects yet</span>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <ul class="navbar-nav">
+        <li class="nav-item" *ngIf="!isAuth">
+          <a 
+            class="nav-link" 
+            type="button" 
+            style="cursor: pointer;"
+            routerLink="/auth"
+            [queryParams]="{ login: true }"
+            routerLinkActive="active"
+          >
+            Login
+          </a>
+        </li>
+        <li class="nav-item" *ngIf="!isAuth">
+          <a 
+            class="nav-link" 
+            type="button" 
+            style="cursor: pointer;"
+            routerLink="/auth"
+            [queryParams]="{ login: false }"
+            routerLinkActive="active"
+          >
+            Signup
+          </a>
+        </li>
+        <li class="nav-item" *ngIf="isAuth">
+          <a 
+            class="nav-link" 
+            type="button" 
+            style="cursor: pointer;"
+            (click)="onLogout()"
+          >
+            Logout
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,63 @@
+<div class="card">
+  <div class="card-body">
+    <h4 class="card-title mb-3">Create your own project</h4>
+    <button
+      class="btn btn-success"
+      (click)="onToggleProjectForm()"
+    >
+      New Project
+    </button>
+    <div 
+      *ngIf="projectFormOpen"
+      class="mw-400"
+    >
+      <app-project-edit></app-project-edit>
+    </div>
+    <hr>
+    <h4 class="card-title mb-3">Join existing project</h4>
+    <p class="card-subtitle mb-2 text-muted">
+      You will be in the queue to join the project until the admin accepts your request.
+    </p>
+    <form 
+      [formGroup]="searchForm" 
+      (ngSubmit)="onSubmit()"
+      class="mw-400"
+    >
+      <div class="input-group mb-1">
+        <input 
+          formControlName="projectId"
+          type="text" 
+          [class]="['form-control', isValid('projectId')].join(' ')"
+          placeholder="Project id" 
+          aria-label="Project id" 
+          aria-describedby="button-addon2"
+          maxlength="24"
+        >
+        <button 
+          [disabled]="searchForm.invalid"
+          class="btn btn-outline-secondary d-flex align-items-center justify-content-center" 
+          id="button-addon2"
+          type="submit"
+        >
+          Join
+          <div class="ms-2" *ngIf="loading">
+            <app-loading-spinner></app-loading-spinner>
+          </div>
+        </button>
+      </div>
+      <div class="form-text ms-2">
+        Enter the project id (24 alphanumeric chars)
+      </div>
+    </form>
+    <div *ngIf="joinSuccess">
+      <app-alert 
+        message="You have successfully joined the queue for entering project."
+        color="success"
+      >
+      </app-alert>
+    </div>  
+    <div *ngIf="error">
+      <app-alert [message]="'An error occured: ' + error "></app-alert>
+    </div>    
+  </div>
+</div>

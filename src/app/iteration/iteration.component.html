@@ -1,0 +1,127 @@
+<div *ngIf="iteration; else no_found">
+  <h3 class='display-6 fw-normal title'>
+    Iteration:
+    {{ iteration.title }}
+  </h3>
+  <hr>
+  <div class="d-flex flex-wrap align-items-baseline" *ngIf="isAdmin">
+    <button 
+      class="btn btn-outline-warning me-3"
+      (click)="onUpdateIteration()"
+    >
+      Update
+    </button>
+    <button 
+      class="btn btn-outline-danger"
+      [ngClass]="{ active: deleteMode }"
+      (click)="onToggleDeleteMode()"
+    >
+      {{ deleteMode ? 'Cancel' : 'Delete' }}
+    </button>
+    <div *ngIf="deleteMode" class="card m-2 mt-sm-0 p-2">
+      <form 
+        [formGroup]="deleteForm"
+        (ngSubmit)="onDeleteIteration()"
+      >
+        <div class="form-check">
+          <input
+            formControlName="deleteTasks"
+            class="form-check-input" 
+            type="checkbox" 
+            id="flexCheckDefault">
+          <label class="form-check-label" for="flexCheckDefault">
+            Delete iteration tasks
+          </label>
+        </div>
+        <div class="text-secondary mb-1">Otherwise they will drop to backlog</div>
+        <button 
+          class="btn btn-danger"
+          type="submit"
+        >
+          Delete
+        </button>
+      </form>
+    </div>
+  </div>
+  <div class="d-flex flex-wrap my-2">
+    <div class="p-2 text-secondary me-md-5">
+      Created:
+      {{ iteration.createdAt | date }}
+    </div>
+    <div 
+      class="p-2 border rounded"
+      [ngClass]="{ 
+        'border-primary text-primary': !isDeadlinePast(),
+        'border-danger text-danger': isDeadlinePast() 
+      }"
+    >
+      Deadline:
+      {{ iteration.deadline | date }}
+    </div>
+  </div>
+  <div style="max-width: 400px;" class="mb-2">
+    <button 
+      class="btn btn-success mb-2"
+      (click)="toggleTaskForm()"
+    >
+      New Task
+    </button>
+    <app-task-edit 
+      *ngIf="taskFormOpen"
+      [iterationId]="iteration._id"
+    ></app-task-edit>
+  </div>
+  <div class="row g-2 scrum-table">
+    <div class="col-md-4 border border-2">
+      <h6>Todo</h6>
+      <div 
+        *ngFor="let task of iteration.tasks.TODO"
+        class="task-col"
+      >
+        <app-task 
+          [task]="task" 
+          iterationStorage="TODO"
+          [iterationId]="iteration._id"
+        >
+        </app-task>
+      </div>
+    </div>
+    <div class="col-md-4 border border-2">
+      <h6>Doing</h6>
+      <div
+        *ngFor="let task of iteration.tasks.DOING"
+        class="task-col"
+      >
+        <app-task 
+          [task]="task"
+          iterationStorage="DOING"
+          [iterationId]="iteration._id"
+        >
+        </app-task>
+      </div>
+    </div>
+    <div class="col-md-4 border border-2">
+      <h6>Done</h6>
+      <div
+        *ngFor="let task of iteration.tasks.DONE"
+        class="task-col"
+      >
+        <app-task 
+          [task]="task"
+          iterationStorage="DONE"
+          [iterationId]="iteration._id"
+        >
+        </app-task>
+      </div>
+    </div>
+  </div> 
+</div>
+<ng-template #no_found>
+  <div class="card">
+    <div class="card-body">
+      <div class="card-text fst-italic">
+        No iteration found
+      </div>
+    </div>
+  </div>
+</ng-template>

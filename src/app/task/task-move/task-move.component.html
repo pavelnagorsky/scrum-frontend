@@ -1,0 +1,38 @@
+<div class="btn-group">
+  <button 
+    appDropdown
+    type="button" 
+    class="btn btn-sm btn-outline-primary dropdown-toggle" 
+    data-bs-toggle="dropdown" 
+    aria-expanded="false"
+  >
+    Move
+  </button>
+  <ul class="dropdown-menu mh-fixed">
+    <li *ngIf="iterationId">
+      <button 
+        class="dropdown-item"
+        (click)="onMove()"
+      >BACKLOG</button>
+      <hr class="dropdown-divider">
+    </li>
+    <li *ngFor="let iter of iterations">
+      <span class="dropdown-item-text">
+        <b class="fst-italic">{{ iter.title }}</b>
+      </span>
+      <button 
+        class="dropdown-item"
+        (click)="onMove(iter._id, 'TODO')"
+      >TODO</button>
+      <button 
+        class="dropdown-item"
+        (click)="onMove(iter._id, 'DOING')"
+      >DOING</button>
+      <button 
+        class="dropdown-item"
+        (click)="onMove(iter._id, 'DONE')"
+      >DONE</button>
+      <hr class="dropdown-divider">
+    </li>
+  </ul>
+</div>

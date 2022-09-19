@@ -1,0 +1,100 @@
+<h3 class="display-6 fs-bold title">
+  Project:
+  {{ projectData?.title ?? 'No project found '}}
+</h3>
+<hr>
+<div *ngIf="projectData">
+  <div *ngIf="isAdmin" style="max-width: 400px;">
+    <div class="d-flex mb-2">
+      <button 
+        class="btn btn-outline-warning me-3"
+        [ngClass]="{ active: updateMode }"
+        (click)="onToggleUpdateMode()"
+      >
+        {{ updateMode ? 'Cancel' : 'Update' }}
+      </button>
+      <button 
+        class="btn btn-outline-danger"
+        (click)="onDeleteProject()"
+      >
+        Delete
+      </button>
+    </div>
+    <app-project-edit *ngIf="updateMode"></app-project-edit>
+  </div>
+  <button 
+    *ngIf="!isAdmin"
+    class="btn btn-sm btn-outline-danger mb-3"
+    (click)="onLeaveProject()"
+  >
+    Leave Project
+  </button>
+  <div class="d-flex flex-wrap mb-1">
+    <p class="text-secondary mb-0 me-5">
+      Created:
+      {{ projectData.createdAt | date }}
+    </p>
+    <p class="text-secondary mb-0"> 
+      Project Id to share: {{ projectData._id }}
+    </p>
+  </div>
+  <div class="description mb-2" style="max-width: 580px;">
+    {{ projectData.description }}
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="card-text fst-italic">
+        {{ projectData._id ? 'Open any iteration or backlog' : 'No project found' }}
+      </div>
+    </div>
+  </div>
+  <div class="my-2" *ngIf="isAdmin">
+    <h6>Project Queue:</h6>
+    <ul class="list-group">
+      <li 
+        class="list-group-item fst-italic" 
+        *ngIf="projectData.queue.length === 0"
+      >
+        The queue is empty
+      </li>
+      <li 
+        *ngFor="let user of projectData.queue" 
+        class="list-group-item d-flex flex-wrap align-items-center"
+      >
+        <div class="mb-1 mb-sm-0">
+          <div>
+            username: <b>{{ user.username }}</b>
+          </div>
+          <div>
+            email: <b>{{ user.email }}</b>
+          </div>
+        </div>
+        <div class="ms-2">
+          <button 
+            class="btn btn-sm btn-outline-success me-2"
+            (click)="onAcceptUser(user.userId)"
+          >
+            Accept
+          </button>
+          <button 
+            class="btn btn-sm btn-outline-danger"
+            (click)="onRejectUser(user.userId)"
+          >
+            Reject
+          </button>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="my-2">
+    <h6>Project Users:</h6>
+    <ul class="list-group">
+      <li 
+        *ngFor="let user of projectData.users" 
+        class="list-group-item"
+      >
+        {{ user.username }}
+      </li>
+    </ul>
+  </div>
+</div>

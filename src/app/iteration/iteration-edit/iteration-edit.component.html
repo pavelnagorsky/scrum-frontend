@@ -1,0 +1,67 @@
+<div class="card mb-2" [@fadeInOut]>
+  <div class="card-body">
+    <div class="card-title text-center fw-bold">
+      {{ editMode ? 'Edit' : 'New' }} Iteration
+    </div>
+    <div class="card-text">
+      <form
+        class="form" 
+        [formGroup]="iterationForm" 
+        (ngSubmit)="onSubmit()"
+      >
+        <div class="mb-3">
+          <div class="form-group">
+            <label class="form-label" for="title">Title</label>
+            <input 
+              formControlName="title"
+              type="text" 
+              placeholder="Title" 
+              id="title" 
+              [class]="['form-control', isValid('title')].join(' ')" 
+              aria-describedby="titleHelp"
+            >
+            <div 
+              [ngClass]="{ 'd-none': !showControlMessage('title') }"
+              id="titleHelp" 
+              class="form-text"
+            >
+              Please, provide a valid title (min length - 3 chars)
+            </div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <div class="form-group">
+            <label class="form-label" for="deadline">Deadline</label>
+            <input 
+              formControlName="deadline"
+              [class]="['form-control', isValid('deadline')].join(' ')" 
+              type="date" 
+              placeholder="Date to finish" 
+              id="deadline" 
+            >
+          </div>
+        </div>
+        <div class="d-flex justify-content-center">
+          <button 
+            [disabled]="iterationForm.invalid"
+            class="btn btn-primary d-flex align-items-center justify-content-center me-2" 
+            style="width: 140px;"
+            type="submit"
+          >
+            {{ editMode ? 'Update' : 'Create' }}
+            <div class="ms-2" *ngIf="loading">
+              <app-loading-spinner></app-loading-spinner>
+            </div>
+          </button>
+          <button
+            class="btn btn-outline-danger"
+            type="button"
+            (click)="onCancel()"
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
