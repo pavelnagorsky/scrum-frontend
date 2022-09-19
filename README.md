@@ -1,6 +1,8 @@
 # Scrum front-end
 
-This is a demo web-platform for project management based on scrum methodology
+This is a demo web-platform for project management based on scrum methodology.
+
+Developed with angular 14, bootstrap, ngrx.
 
 ## Descriprion 
 
